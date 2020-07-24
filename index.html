@@ -348,6 +348,12 @@
                 <p>
                     We never transfer or share your reports. Everything is done on your trusted device.
                 </p>
+                <p>
+                    <strong>Usage data —</strong> when you visit our site, we will store: the website from which you visited us from, the parts of our site you visit, the date and duration of your visit, your anonymised IP address, information from the device (device type, operating system, screen resolution, language, country you are located in, and web browser type) you used during your visit, and <a href="https://matomo.org/faq/general/faq_18254/">more</a>. We process this usage data in <a href="https://matomo.org">Matomo Analytics</a> for statistical purposes, to improve our site and to recognize and stop any misuse.
+                </p>
+                <p>
+                    Tracking cookies are disabled.
+                </p>
             </div>
         </div>
 
@@ -372,6 +378,7 @@
     var u="//analytics.letteropener.com/";
     _paq.push(['setTrackerUrl', u+'matomo.php']);
     _paq.push(['setSiteId', '4']);
+    _paq.push(['requireCookieConsent']);
     var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
     g.type='text/javascript'; g.async=true; g.src=u+'matomo.js'; s.parentNode.insertBefore(g,s);
   })();
@@ -520,6 +527,7 @@ END:VCALENDAR";
     }
     
     function download(filename, mimetype, data) {
+        _paq.push(['trackLink', 'https://annual-self-classification-report.github.io' + filename, 'download']);
         var file = new Blob([data], {
             type: mimetype
         });
