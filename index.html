@@ -1,0 +1,768 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <!-- Required meta tags -->
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+
+        <!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous" />
+        <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono&display=swap" rel="stylesheet" />
+
+        <title>Annual Self Classification Report.csv</title>
+
+        <style>
+            body {
+                background: #f2f4f8;
+                font-family: "IBM Plex Mono", monospace;
+            }
+
+            .section {
+                background: #fff;
+            }
+
+            :root {
+                --blue: #001141;
+                --primary: #001141;
+            }
+
+            .btn-primary {
+                color: #fff;
+                background-color: #878d96;
+                border-color: #697077;
+            }
+            .btn-primary {
+                color: #fff;
+                background-color: #878d96;
+                border-color: #697077;
+            }
+            .btn-primary:hover {
+                background-color: #a2a9b0;
+                border-color: #697077;
+            }
+
+            .bd-callout {
+                padding: 1.25rem;
+                margin-top: 1.25rem;
+                margin-bottom: 1.25rem;
+                border: 1px solid #eee;
+                border-left-width: 0.25rem;
+                border-radius: 0.25rem;
+            }
+            .bd-callout-warning {
+                border-left-color: #f0ad4e;
+            }
+            .bd-callout-danger {
+                border-left-color: #d9534f;
+            }
+            .col-form-label-sm {
+                padding-bottom: 0;
+                margin-bottom: 0;
+            }
+
+            .selected,
+            .selected.table-hover tbody tr:hover {
+                color: #fff !important;
+                background-color: #007bff !important;
+            }
+        </style>
+    </head>
+    <body>
+        <nav class="navbar navbar-light bg-light">
+            <div class="container">
+                <span class="navbar-brand mb-0 h1">BIS Annual Self-Classification Report Generator</span>
+            </div>
+        </nav>
+
+        <div class="container">
+            <div class="section my-4 p-4">
+                <h3>To Whom It May Concern:</h3>
+                <p>This website is <b>NOT</b> affiliated with or in any way associated with the Bureau of Industry and Security or National Security Agency.</p>
+                <p>
+                    This website only helps generating correct formatted CSV file as required per
+                    <a href="http://www.ecfr.gov/cgi-bin/retrieveECFR?gp=1&SID=4150cfbf028e9a85574385383a581f47&h=L&mc=true&n=pt15.2.742&r=PART&ty=HTML#ap15.2.742_119.6">Supp. 8 to Part 742</a>.
+                </p>
+            </div>
+
+            <div class="section my-4 p-4">
+                <h3>Where to report</h3>
+                <p>Reports should be emailed to BIS and the ENC Encryption Request Cordinator at <a href="mailto:crypt-supp8@bis.doc.gov">crypt-supp8@bis.doc.gov</a> and <a href="mailto:crypt-enc@nsa.gov">crypt-enc@nsa.gov</a>.</p>
+                <h3>When to report</h3>
+                <p>
+                    An annual self-classification report for applicable encryption commodities, software and components exported or reexported during a calendar year (January 1 through December 31) must be received by BIS and the ENC
+                    Encryption Request Cordinator no later than <b>February 1</b> of the following year.
+                </p>
+            </div>
+
+            <div class="section my-4 p-4">
+                <h3>Example</h3>
+                <p>
+                    The table in this <a href="https://www.bis.doc.gov/index.php/component/docman/?task=doc_download&gid=1675">sample annual self-classification report</a> provides an example of the various fields required within the Annual
+                    Self-Classification Report as required per <a href="http://www.ecfr.gov/cgi-bin/retrieveECFR?gp=1&SID=4150cfbf028e9a85574385383a581f47&h=L&mc=true&n=pt15.2.742&r=PART&ty=HTML#ap15.2.742_119.6">Supp. 8 to Part 742</a>,
+                    section (b) and demonstrates how various instructions & tips published in Supplement 8 to part 742 works out in practice.
+                </p>
+                <div class="form-group d-flex justify-content-end">
+                    <button type="button" onclick="loadSample()" class="btn btn-primary">Load Sample</button>
+                </div>
+            </div>
+
+            <noscript>
+                <div class="bd-callout bd-callout-danger">
+                    <h5>Enable JavaScript</h5>
+                    <p>JavaScript is reuqired to generated BIS Annual Self-Classification Report.</p>
+                </div>
+            </noscript>
+
+            <form id="submitter" action="test" class="section my-4 p-4">
+                <h2>Submitter</h2>
+
+                <p>
+                    Relate to the company as a whole, and thus should be entered the same for each product.
+                </p>
+
+                <div class="form-group">
+                    <label for="submitterName" class="col-form-label-sm">Submitter Name</label>
+                    <input type="text" class="form-control form-control-sm" id="submitterName" name="submitterName" onkeyup="updateSubmitterFromUI()" />
+                    <small class="form-text text-muted">Name of company or individual submitting the report</small>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group col-sm-4">
+                        <div class="form-group">
+                            <label for="telephoneNumber" class="col-form-label-sm">Telephone Number</label>
+                            <input type="text" class="form-control form-control-sm" id="telephoneNumber" name="telephoneNumber" onkeyup="updateSubmitterFromUI()" />
+                        </div>
+                        <div class="form-group">
+                            <label for="emailAddress" class="col-form-label-sm">E-Mail Address</label>
+                            <input type="text" class="form-control form-control-sm" id="emailAddress" name="emailAddress" onkeyup="updateSubmitterFromUI()" />
+                        </div>
+                    </div>
+
+                    <div class="form-group col-sm-8">
+                        <div class="form-group">
+                            <label for="mailingAddress" class="col-form-label-sm">Mailing Address</label>
+                            <textarea class="form-control form-control-sm" id="mailingAddress" name="mailingAddress" rows="5" onkeyup="updateSubmitterFromUI()"></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group col-sm-4">
+                        <label for="nonUSComponents" class="col-form-label-sm">Non-U.S. Components</label>
+                        <select class="form-control form-control-sm" id="nonUSComponents" name="nonUSComponents" onchange="updateSubmitterFromUI()">
+                            <option value="NO">No</option>
+                            <option value="YES">Yes</option>
+                        </select>
+                        <small class="form-text text-muted">With respect to your company's encryption products, do they incorporate encryption components produced or furnished by non-U.S. sources or vendors?</small>
+                    </div>
+
+                    <div class="form-group col-sm-8">
+                        <label for="nonUSManufacturing" class="col-form-label-sm">Non-U.S. Manufacturing locations</label>
+
+                        <textarea class="form-control form-control-sm" id="nonUSManufacturing" name="nonUSManufacturing" rows="2" onkeyup="updateSubmitterFromUI()"></textarea>
+                        <small class="form-text text-muted">
+                            With respect to your company's encryption products, are any of them manufactured in non-U.S. locations?” If yes, list the non-U.S. manufacturing locations by city and country. If necessary, enter 'NONE' or 'N/A'
+                        </small>
+                    </div>
+                </div>
+            </form>
+
+            <form id="product" class="section p-4">
+                <h2>Product</h2>
+
+                <div class="form-row">
+                    <div class="form-group col-sm-4">
+                        <label for="productName" class="col-form-label-sm">Product Name</label>
+                        <input type="text" class="form-control form-control-sm" id="productName" name="productName" />
+                    </div>
+                    <div class="form-group col-sm-4">
+                        <label for="modelNumber" class="col-form-label-sm" data-toggle="popover" data-content="If necessary, enter ‘NONE’ or ‘N/A’.">
+                            Model Number
+                            <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-question-diamond-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                <path
+                                    fill-rule="evenodd"
+                                    d="M9.05.435c-.58-.58-1.52-.58-2.1 0L.436 6.95c-.58.58-.58 1.519 0 2.098l6.516 6.516c.58.58 1.519.58 2.098 0l6.516-6.516c.58-.58.58-1.519 0-2.098L9.05.435zM6.57 6.033H5.25C5.22 4.147 6.68 3.5 8.006 3.5c1.397 0 2.673.73 2.673 2.24 0 1.08-.635 1.594-1.244 2.057-.737.559-1.01.768-1.01 1.486v.355H7.117l-.007-.463c-.038-.927.495-1.498 1.168-1.987.59-.444.965-.736.965-1.371 0-.825-.628-1.168-1.314-1.168-.901 0-1.358.603-1.358 1.384zm1.251 6.443c-.584 0-1.009-.394-1.009-.927 0-.552.425-.94 1.01-.94.609 0 1.028.388 1.028.94 0 .533-.42.927-1.029.927z"
+                                />
+                            </svg>
+                        </label>
+                        <input type="text" class="form-control form-control-sm" id="modelNumber" name="modelNumber" />
+                    </div>
+                    <div class="form-group col-sm-4">
+                        <label
+                            for="manufacturer"
+                            class="col-form-label-sm"
+                            data-toggle="popover"
+                            data-content="Enter ‘SELF’ if you are the primary manufacturer of the item. If there are multiple manufacturers for the item but none is clearly primary, either enter the name of one of the manufacturers or else enter ‘MULTIPLE’. If necessary, enter ‘NONE’ or ‘N/A’."
+                        >
+                            Manufacturer
+                            <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-question-diamond-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                <path
+                                    fill-rule="evenodd"
+                                    d="M9.05.435c-.58-.58-1.52-.58-2.1 0L.436 6.95c-.58.58-.58 1.519 0 2.098l6.516 6.516c.58.58 1.519.58 2.098 0l6.516-6.516c.58-.58.58-1.519 0-2.098L9.05.435zM6.57 6.033H5.25C5.22 4.147 6.68 3.5 8.006 3.5c1.397 0 2.673.73 2.673 2.24 0 1.08-.635 1.594-1.244 2.057-.737.559-1.01.768-1.01 1.486v.355H7.117l-.007-.463c-.038-.927.495-1.498 1.168-1.987.59-.444.965-.736.965-1.371 0-.825-.628-1.168-1.314-1.168-.901 0-1.358.603-1.358 1.384zm1.251 6.443c-.584 0-1.009-.394-1.009-.927 0-.552.425-.94 1.01-.94.609 0 1.028.388 1.028.94 0 .533-.42.927-1.029.927z"
+                                />
+                            </svg>
+                        </label>
+                        <input type="text" class="form-control form-control-sm" id="manufacturer" name="manufacturer" />
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group col-sm-4">
+                        <label for="eccn" class="col-form-label-sm d-none d-lg-block">Export Control Classification Number</label>
+                        <label for="eccn" class="col-form-label-sm d-block d-lg-none">ECCN</label>
+                        <select class="form-control form-control-sm" id="eccn" name="eccn">
+                            <option>5A002</option>
+                            <option>5B002</option>
+                            <option>5D002</option>
+                            <option>5A992</option>
+                            <option>5D992</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-sm-4">
+                        <label for="authorizationType" class="col-form-label-sm">Authorization Type</label>
+                        <select class="form-control form-control-sm" id="authorizationType" name="authorizationType">
+                            <option>ENC</option>
+                            <option>MMKT</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-sm-4">
+                        <label for="itemType" class="col-form-label-sm">Item Type</label>
+                        <select class="form-control form-control-sm" id="itemType" name="itemType">
+                            <option><!--(i)-->Access point</option>
+                            <option><!--(ii)-->Cellular</option>
+                            <option><!--(iii)-->Computer or computing platforms</option>
+                            <option><!--(iv)-->Computer forensics</option>
+                            <option><!--(v)-->Cryptographic accelerator</option>
+                            <option><!--(vi)-->Data backup and recovery</option>
+                            <option><!--(vii)-->Database</option>
+                            <option><!--(viii)-->Disk/drive encryption</option>
+                            <option><!--(ix)-->Distributed computing</option>
+                            <option><!--(x)-->Email communications</option>
+                            <option><!--(xi)-->Fax communications</option>
+                            <option><!--(xii)-->File encryption</option>
+                            <option><!--(xiii)-->Firewall</option>
+                            <option><!--(xiv)-->Gateway</option>
+                            <option><!--(xv)-->Intrusion detection</option>
+                            <option><!--(xvi)-->Identity management</option>
+                            <option><!--(xvii)-->Key exchange</option>
+                            <option><!--(xviii)-->Key management</option>
+                            <option><!--(xix)-->Key storage</option>
+                            <option><!--(xx)-->Link encryption</option>
+                            <option><!--(xxi)-->Local area networking (LAN)</option>
+                            <option><!--(xxii)-->Metropolitan area networking (MAN)</option>
+                            <option><!--(xxiii)-->Mobility and mobile applications n.e.s.</option>
+                            <option><!--(xxiv)-->Modem</option>
+                            <option><!--(xxv)-->Multimedia n.e.s.</option>
+                            <option><!--(xxvi)-->Network convergence or infrastructure n.e.s.</option>
+                            <option><!--(xxvii)-->Network forensics</option>
+                            <option><!--(xxviii)-->Network intelligence</option>
+                            <option><!--(xxix)-->Network or systems management (OAM/OAM&P)</option>
+                            <option><!--(xxx)-->Network security monitoring</option>
+                            <option><!--(xxxi)-->Network vulnerability and penetration testing</option>
+                            <option><!--(xxxii)-->Operating system</option>
+                            <option><!--(xxxiii)-->Optical networking</option>
+                            <option><!--(xxxiv)-->Radio communications</option>
+                            <option><!--(xxxv)-->Router</option>
+                            <option><!--(xxxvi)-->Satellite communications</option>
+                            <option><!--(xxxvii)-->Short range wireless n.e.s.</option>
+                            <option><!--(xxxviii)-->Storage Area Networking (SAN)</option>
+                            <option><!--(xxxix)-->3G/4G/5G/LTE/WiMAX</option>
+                            <option><!--(xl)-->Trusted computing</option>
+                            <option><!--(xli)-->Videoconferencing</option>
+                            <option><!--(xlii)-->Virtual private networking (VPN)</option>
+                            <option><!--(xliii)-->Voice communications n.e.s.</option>
+                            <option><!--(xliv)-->Voice over Internet Protocol (VoIP)</option>
+                            <option><!--(xlv)-->Wide Area Networking (WAN)</option>
+                            <option><!--(xlvi)-->Wireless Local Area Networking (WLAN)</option>
+                            <option><!--(xlvii)-->Wireless Personal Area Networking (WPAN)</option>
+                            <option><!--(xlviii)-->Test equipment n.e.s.</option>
+
+                            <!-- (xlix) Other (please specify) -->
+                        </select>
+                    </div>
+                </div>
+
+                <div id="productButtonGroup" class="form-group d-flex justify-content-end">
+                    <button type="button" id="removeButton" onclick="removeProduct()" class="btn btn-primary d-none">Remove Product</button>
+                    <button type="button" id="updateButton" onclick="updateProduct()" class="btn btn-primary d-none">Update Product</button>
+                    <button type="button" id="addButton" onclick="addProduct()" class="btn btn-primary">Add Product</button>
+                </div>
+
+                <div class="py-4">
+                    <h2>Annual Self Classification Report.csv</h2>
+                    <table class="table table-responsive table-hover border" style="min-height: 250px;">
+                        <thead>
+                            <tr>
+                                <th scope="col"><nobr>PRODUCT NAME</nobr></th>
+                                <th scope="col"><nobr>MODEL NUMBER</nobr></th>
+                                <th scope="col"><nobr>MANUFACTURER</nobr></th>
+                                <th scope="col"><nobr>ECCN</nobr></th>
+                                <th scope="col"><nobr>AUTHORIZATION TYPE</nobr></th>
+                                <th scope="col"><nobr>ITEM TYPE</nobr></th>
+                                <th scope="col"><nobr>SUBMITTER NAME</nobr></th>
+                                <th scope="col"><nobr>TELEPHONE NUMBER</nobr></th>
+                                <th scope="col"><nobr>E-MAIL ADDRESS</nobr></th>
+                                <th scope="col"><nobr>MAILING ADDRESS</nobr></th>
+                                <th scope="col"><nobr>NON-U.S. COMPONENTS</nobr></th>
+                                <th scope="col"><nobr>NON-U.S. MANUFACTURING LOCATIONS</nobr></th>
+                            </tr>
+                        </thead>
+                        <tbody id="data"></tbody>
+                    </table>
+
+                    <div class="form-group d-flex justify-content-between">
+                        <button type="button" class="btn btn-secondary" onclick="clearData()">Clear</button>
+                        <button type="button" class="btn btn-primary" onclick="downloadReport()">Download Report</button>
+                    </div>
+                </div>
+            </form>
+
+            <div class="section my-4 p-4">
+                <h2>
+                    Reminder
+                    <svg style="padding-bottom: 7px;" width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-calendar-event" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" d="M1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4H1zm1-3a2 2 0 0 0-2 2v11a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2H2z" />
+                        <path fill-rule="evenodd" d="M3.5 0a.5.5 0 0 1 .5.5V1a.5.5 0 0 1-1 0V.5a.5.5 0 0 1 .5-.5zm9 0a.5.5 0 0 1 .5.5V1a.5.5 0 0 1-1 0V.5a.5.5 0 0 1 .5-.5z" />
+                        <rect width="2" height="2" x="11" y="6" rx=".5" />
+                    </svg>
+                </h2>
+                <p>
+                    A yearly calendar appointment with an alert 14 days before February 1.
+                </p>
+                <div class="form-group d-flex justify-content-end">
+                    <button type="button" onclick="downloadReminder()" class="btn btn-primary">Download Reminder</button>
+                </div>
+            </div>
+
+            <div class="section my-4 p-4">
+                <h2>
+                    Privacy Policy
+                    <svg style="padding-bottom: 7px;" width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-shield-fill-check" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                        <path
+                            fill-rule="evenodd"
+                            d="M8 .5c-.662 0-1.77.249-2.813.525a61.11 61.11 0 0 0-2.772.815 1.454 1.454 0 0 0-1.003 1.184c-.573 4.197.756 7.307 2.368 9.365a11.192 11.192 0 0 0 2.417 2.3c.371.256.715.451 1.007.586.27.124.558.225.796.225s.527-.101.796-.225c.292-.135.636-.33 1.007-.586a11.191 11.191 0 0 0 2.418-2.3c1.611-2.058 2.94-5.168 2.367-9.365a1.454 1.454 0 0 0-1.003-1.184 61.09 61.09 0 0 0-2.772-.815C9.77.749 8.663.5 8 .5zm2.854 6.354a.5.5 0 0 0-.708-.708L7.5 8.793 6.354 7.646a.5.5 0 1 0-.708.708l1.5 1.5a.5.5 0 0 0 .708 0l3-3z"
+                        />
+                    </svg>
+                </h2>
+                <p>
+                    We never transfer or share your reports. Everything is done on your trusted device.
+                </p>
+            </div>
+        </div>
+
+        <div class="my-4 p-4 text-center">
+            <a href="https://github.com/annual-self-classification-report/annual-self-classification-report.github.io/blob/master/LICENSE">MIT License</a> | Contributions welcome:
+            <a href="https://github.com/annual-self-classification-report/annual-self-classification-report.github.io">github.com/annual-self-classification-report</a>
+        </div>
+
+        <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.2/dist/jquery.validate.min.js" integrity="sha256-+BEKmIvQ6IsL8sHcvidtDrNOdZO3C9LtFPtF2H0dOHI=" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+        <script src="https://unpkg.com/papaparse@latest/papaparse.min.js"></script>
+        
+<script type="text/javascript">
+  var _paq = window._paq = window._paq || [];
+  /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
+  _paq.push(['trackPageView']);
+  _paq.push(['enableLinkTracking']);
+  (function() {
+    var u="//analytics.letteropener.com/";
+    _paq.push(['setTrackerUrl', u+'matomo.php']);
+    _paq.push(['setSiteId', '4']);
+    var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+    g.type='text/javascript'; g.async=true; g.src=u+'matomo.js'; s.parentNode.insertBefore(g,s);
+  })();
+</script>
+        
+<script>
+    let emtpyData = ["", "", "", "", "", "", "", "", "", "", "", ""];
+    
+    let submitterName = document.getElementById("submitterName");
+    let telephoneNumber = document.getElementById("telephoneNumber");
+    let emailAddress = document.getElementById("emailAddress");
+    let mailingAddress = document.getElementById("mailingAddress");
+    let nonUSComponents = document.getElementById("nonUSComponents");
+    let nonUSManufacturing = document.getElementById("nonUSManufacturing");
+    
+    let productName = document.getElementById("productName");
+    let modelNumber = document.getElementById("modelNumber");
+    let manufacturer = document.getElementById("manufacturer");
+    let eccn = document.getElementById("eccn");
+    let authorizationType = document.getElementById("authorizationType");
+    let itemType = document.getElementById("itemType");
+    
+    let productButtonGroup = document.getElementById("productButtonGroup");
+    let removeButton = document.getElementById("removeButton");
+    let updateButton = document.getElementById("updateButton");
+    let addButton = document.getElementById("addButton");
+    
+    var selectedRow = null;
+    
+    function loadSample() {
+        json.data = [
+            ["XtraGood VPN", "2010", "ABC XYZ Manufacturing Inc", "5A002", "ENC", "Virtual private networking (VPN)", "Jane Smith", "(202) 555-0000", "jsmith@address.com", "555 Elm St. Washington DC 22032", "NO", "Shenzhen China Amsterdam Nethelands", "", "", "", ""],
+            ["XtraGood Firewall", "1100", "SELF", "5A992", "MMKT", "Firewall", "Jane Smith", "(202) 555-0000", "jsmith@address.com", "555 Elm St. Washington DC 22032", "NO", "Shenzhen China Amsterdam Nethelands", "", "", "", ""],
+            ["XtraGood WLAN chipset", "XG-80211-xxxx", "MULTIPLE", "5A002", "ENC", "Wireless Local Area Networking (WLAN)", "Jane Smith", "(202) 555-0000", "jsmith@address.com", "555 Elm St. Washington DC 22032", "NO", "Shenzhen China Amsterdam Nethelands", "", "", "", ""],
+            ["XtraGood Client App", "1xx", "PDQ123 Software Services LLC", "5D992", "MMKT", "Mobility and mobile applications n.e.s.", "Jane Smith", "(202) 555-0000", "jsmith@address.com", "555 Elm St. Washington DC 22032", "NO", "Shenzhen China Amsterdam Nethelands", "", "", "", ""],
+            ["XtraGood Connectivity AP", "300-xxx", "MULTIPLE", "5A992", "MMKT", "Access point", "Jane Smith", "(202) 555-0000", "jsmith@address.com", "555 Elm St. Washington DC 22032", "NO", "Shenzhen China Amsterdam Nethelands", "", "", "", ""],
+            ["XclusiveAgent – Pro Ed.", "5xx", "SELF", "5D002", "ENC", "File encryption", "Jane Smith", "(202) 555-0000", "jsmith@address.com", "555 Elm St. Washington DC 22032", "NO", "Shenzhen China Amsterdam Nethelands", "", "", "", ""],
+            ["XclusiveAgent – Home Ed", "100", "SELF", "5A992", "MMKT", "File encryption", "Jane Smith", "(202) 555-0000", "jsmith@address.com", "555 Elm St. Washington DC 22032", "NO", "Shenzhen China Amsterdam Nethelands", "", "", "", ""],
+            ["Xclusive Agent Secure Storage Device", "XA-SHD-xxx", "MULTIPLE", "5A992", "MMKT", "Disk/drive encryption", "Jane Smith", "(202) 555-0000", "jsmith@address.com", "555 Elm St. Washington DC 22032", "NO", "Shenzhen China Amsterdam Nethelands", "", "", "", ""],
+            ["XclusiveAgent Enterprise Key Token", "XA-KT-xxx", "ABC XYZ Manufacturing Inc", "5A002", "ENC", "Key storage", "Jane Smith", "(202) 555-0000", "jsmith@address.com", "555 Elm St. Washington DC 22032", "NO", "Shenzhen China Amsterdam Nethelands", "", "", "", ""],
+            ["XclusiveAgent PKI", "NONE", "SELF", "5D002", "ENC", "Key management", "Jane Smith", "(202) 555-0000", "jsmith@address.com", "555 Elm St. Washington DC 22032", "NO", "Shenzhen China Amsterdam Nethelands", "", "", "", ""],
+            ["Xclusive Agent Secure USB Drive", "XA-SUSB-xxx", "MULTIPLE", "5A992", "MMKT", "Disk/drive encryption", "Jane Smith", "(202) 555-0000", "jsmith@address.com", "555 Elm St. Washington DC 22032", "NO", "Shenzhen China Amsterdam Nethelands", "", "", "", ""]
+        ];
+    
+        updateTableUI();
+        updateSubmitterUI(json.data[0]);
+    }
+    
+    function addProduct() {
+        if (!$("#submitter").valid()) return;
+        if (!$("#product").valid()) return;
+        json.data.push(dataFromUI());
+        updateTableUI();
+        updateProductUI(emtpyData);
+    }
+    
+    function removeProduct() {
+        let index = removeButton.dataset.index;
+        json.data.splice(index, 1);
+        selectedRow = null;
+        updateTableUI();
+        updateProductUI(emtpyData);
+    }
+    
+    function clearData() {
+        json.data = [];
+        updateTableUI();
+        updateProductUI(emtpyData);
+        updateSubmitterUI(emtpyData);
+    
+        removeButton.classList.add("d-none");
+        updateButton.classList.add("d-none");
+        addButton.classList.remove("d-none");
+    
+        productButtonGroup.classList.add("justify-content-end");
+        productButtonGroup.classList.remove("justify-content-between");
+    }
+    
+    function updateProduct() {
+        if (!$("#submitter").valid()) return;
+        if (!$("#product").valid()) return;
+        let index = updateButton.dataset.index;
+        json.data[index] = dataFromUI();
+        updateTableRowUI(selectedRow, json.data[index]);
+    }
+    
+    function downloadReport() {
+        var csv = Papa.unparse(json);
+        download("Annual Self Classification Report.csv", "text/csv", csv);
+    }
+    
+    function downloadReminder() {
+        var event = "BEGIN:VCALENDAR\r\n\
+VERSION:2.0\r\n\
+PRODID:-//annual-self-classification-report.github.io//Annual Self Classification Report\r\n\
+CALSCALE:GREGORIAN\r\n\
+BEGIN:VTIMEZONE\r\n\
+TZID:Europe/Vienna\r\n\
+TZURL:http://tzurl.org/zoneinfo-outlook/Europe/Vienna\r\n\
+X-LIC-LOCATION:Europe/Vienna\r\n\
+BEGIN:DAYLIGHT\r\n\
+TZOFFSETFROM:+0100\r\n\
+TZOFFSETTO:+0200\r\n\
+TZNAME:CEST\r\n\
+DTSTART:19700329T020000\r\n\
+RRULE:FREQ=YEARLY;BYMONTH=3;BYDAY=-1SU\r\n\
+END:DAYLIGHT\r\n\
+BEGIN:STANDARD\r\n\
+TZOFFSETFROM:+0200\r\n\
+TZOFFSETTO:+0100\r\n\
+TZNAME:CET\r\n\
+DTSTART:19701025T030000\r\n\
+RRULE:FREQ=YEARLY;BYMONTH=10;BYDAY=-1SU\r\n\
+END:STANDARD\r\n\
+END:VTIMEZONE\r\n\
+BEGIN:VEVENT\r\n\
+DTSTAMP:20200724T124332Z\r\n\
+UID:" + uuidv4() + "\r\n\
+DTSTART;TZID=Europe/Vienna:20200201T120000\r\n\
+RRULE:FREQ=YEARLY;BYMONTH=2;BYMONTHDAY=1\r\n\
+DTEND;TZID=Europe/Vienna:20200201T120000\r\n\
+SUMMARY:Review BIS Annual Self-Classification Report\r\n\
+URL:https://annual-self-classification-report.github.io\r\n\
+DESCRIPTION:An annual self-classification report for applicable encryption commodities\\, software and components exported or reexported during a calendar year (January 1 through December 31) must be received by BIS and the ENC Encryption Request Cordinator no later than Feburary 1 of the following year.\r\n\
+BEGIN:VALARM\r\n\
+ACTION:DISPLAY\r\n\
+DESCRIPTION:Review BIS Annual Self-Classification Report\r\n\
+TRIGGER:-P1W\r\n\
+END:VALARM\r\n\
+BEGIN:VALARM\r\n\
+ACTION:DISPLAY\r\n\
+DESCRIPTION:Review BIS Annual Self-Classification Report\r\n\
+TRIGGER:-P2W\r\n\
+END:VALARM\r\n\
+END:VEVENT\r\n\
+END:VCALENDAR";
+        download("Review BIS Annual Self-Classification Report.ics", "text/calendar", event);
+    }
+    
+    function uuidv4() {
+        return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+            var r = Math.random() * 16 | 0,
+                v = c == 'x' ? r : (r & 0x3 | 0x8);
+            return v.toString(16);
+        });
+    }
+    
+    function download(filename, mimetype, data) {
+        var file = new Blob([data], {
+            type: mimetype
+        });
+        if (window.navigator.msSaveOrOpenBlob) {
+            // IE10+
+            window.navigator.msSaveOrOpenBlob(file, filename);
+        } else {
+            // Others
+            var a = document.createElement("a");
+            var url = URL.createObjectURL(file);
+            a.href = url;
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+            setTimeout(function() {
+                document.body.removeChild(a);
+                window.URL.revokeObjectURL(url);
+            }, 0);
+        }
+    }
+    
+    function OnRowClick(event) {
+        let row = event.currentTarget;
+    
+        if (row.classList.toggle("selected")) {
+            let index = row.dataset.index;
+    
+            removeButton.dataset.index = index;
+            updateButton.dataset.index = index;
+    
+            removeButton.classList.remove("d-none");
+            updateButton.classList.remove("d-none");
+            addButton.classList.add("d-none");
+    
+            productButtonGroup.classList.add("justify-content-between");
+            productButtonGroup.classList.remove("justify-content-end");
+    
+            updateProductUI(json.data[index]);
+    
+            if (selectedRow) selectedRow.classList.remove("selected");
+            selectedRow = row;
+        } else {
+            removeButton.classList.add("d-none");
+            updateButton.classList.add("d-none");
+            addButton.classList.remove("d-none");
+    
+            productButtonGroup.classList.add("justify-content-end");
+            productButtonGroup.classList.remove("justify-content-between");
+    
+            updateProductUI(emtpyData);
+    
+            selectedRow = null;
+        }
+    }
+    
+    function updateSubmitterFromUI() {
+        let dataRow = dataFromUI();
+        for (let rowIdx = 0; rowIdx < json.data.length; rowIdx++) {
+            for (let colIdx = 6; colIdx < 12; colIdx++) {
+                json.data[rowIdx][colIdx] = dataRow[colIdx];
+            }
+        }
+        updateTableUI();
+    }
+    
+    function dataFromUI() {
+        return [
+            productName.value,
+            modelNumber.value,
+            manufacturer.value,
+            eccn.value,
+            authorizationType.value,
+            itemType.value,
+    
+            submitterName.value,
+            telephoneNumber.value,
+            emailAddress.value,
+            mailingAddress.value,
+            nonUSComponents.value,
+            nonUSManufacturing.value,
+        ];
+    }
+    
+    function updateProductUI(dataRow) {
+        productName.value = dataRow[0];
+        modelNumber.value = dataRow[1];
+        manufacturer.value = dataRow[2];
+        eccn.value = dataRow[3];
+        authorizationType.value = dataRow[4];
+        itemType.value = dataRow[5];
+    }
+    
+    function updateSubmitterUI(dataRow) {
+        submitterName.value = dataRow[6];
+        telephoneNumber.value = dataRow[7];
+        emailAddress.value = dataRow[8];
+        mailingAddress.value = dataRow[9];
+        nonUSComponents.value = dataRow[10];
+        nonUSManufacturing.value = dataRow[11];
+    }
+    
+    function updateTableUI() {
+        while (tbody.children.length > 0) {
+            console.log(tbody.children[0].tagName);
+            tbody.removeChild(tbody.children[0]);
+        }
+    
+        for (let rowIdx = 0; rowIdx < json.data.length; rowIdx++) {
+            let tr = document.createElement("tr");
+            tr.dataset.index = rowIdx;
+            tr.onclick = OnRowClick;
+            for (let columnIdx = 0; columnIdx < 12; columnIdx++) {
+                let td = document.createElement("td");
+                td.innerHTML = json.data[rowIdx][columnIdx].replace(/\n/, "<br/>");
+                tr.appendChild(td);
+            }
+            tbody.appendChild(tr);
+        }
+    }
+    
+    function updateTableRowUI(tr, dataRow) {
+        for (let columnIdx = 0; columnIdx < 12; columnIdx++) {
+            let td = tr.children[columnIdx];
+            let value = dataRow[columnIdx];
+            td.innerHTML = value.replace(/\n/, "<br/>");
+        }
+    }
+    
+    var json = {
+        fields: [
+            "PRODUCT NAME",
+            "MODEL NUMBER",
+            "MANUFACTURER",
+            "ECCN",
+            "AUTHORIZATION TYPE",
+            "ITEM TYPE",
+            "SUBMITTER NAME",
+            "TELEPHONE NUMBER",
+            "E-MAIL ADDRESS",
+            "MAILING ADDRESS",
+            "NON-U.S. COMPONENTS",
+            "NON-U.S. MANUFACTURING LOCATIONS",
+        ],
+        data: [],
+    };
+    var tbody = document.getElementById("data");
+    
+    $(function() {
+        $('[data-toggle="popover"]').popover()
+    })
+    
+    $(function() {
+    
+        jQuery.validator.setDefaults({
+            highlight: function(element) {
+                jQuery(element).closest('.form-control').addClass('is-invalid');
+            },
+            unhighlight: function(element) {
+                jQuery(element).closest('.form-control').removeClass('is-invalid');
+            },
+            errorElement: 'span',
+            errorClass: 'invalid-feedback',
+            errorPlacement: function(error, element) {
+                if (element.parent('.input-group').length) {
+                    error.insertAfter(element.parent());
+                } else {
+                    error.insertAfter(element);
+                }
+            }
+        });
+    
+        jQuery.validator.addMethod("comma", function(value, element) {
+            var regex = new RegExp(/,/);
+    
+            if (regex.test(value)) {
+                event.preventDefault();
+                return false;
+            }
+            return true;
+        }, "Because of .csv file format requirements, the only permitted use of a comma is as the necessary separator between line entries. You may not use a comma for any other reason in your encryption self-classification report.");
+    
+        $("#submitter").validate({
+            rules: {
+                submitterName: {
+                    required: true,
+                    maxlength: 50,
+                    comma: true
+                },
+                telephoneNumber: {
+                    required: true,
+                    maxlength: 50,
+                    comma: true
+                },
+                emailAddress: {
+                    required: true,
+                    maxlength: 50,
+                    email: true
+                },
+                mailingAddress: {
+                    required: true,
+                    maxlength: 50,
+                    comma: true
+                },
+                nonUSComponents: {
+                    required: true
+                },
+                nonUSManufacturing: {
+                    required: true,
+                    maxlength: 250,
+                    comma: true
+                }
+            }
+        });
+    
+        $("#product").validate({
+            rules: {
+                productName: {
+                    required: true,
+                    maxlength: 50,
+                    comma: true
+                },
+                modelNumber: {
+                    required: true,
+                    maxlength: 50,
+                    comma: true
+                },
+                manufacturer: {
+                    required: true,
+                    maxlength: 50,
+                    comma: true
+                },
+                eccn: {
+                    required: true,
+                },
+                authorizationType: {
+                    required: true
+                },
+                itemType: {
+                    required: true
+                }
+            }
+        });
+    });
+        </script>
+    </body>
+</html>
+
