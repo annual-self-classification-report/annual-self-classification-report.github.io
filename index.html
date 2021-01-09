@@ -110,8 +110,9 @@
                     Self-Classification Report as required per <a href="http://www.ecfr.gov/cgi-bin/retrieveECFR?gp=1&SID=4150cfbf028e9a85574385383a581f47&h=L&mc=true&n=pt15.2.742&r=PART&ty=HTML#ap15.2.742_119.6" target="_blank">Supp. 8 to Part 742</a>,
                     section (b) and demonstrates how various instructions & tips published in Supplement 8 to part 742 works out in practice.
                 </p>
-                <div class="form-group d-flex justify-content-end">
+                <div class="form-group">
                     <button type="button" onclick="loadSample()" class="btn btn-primary">Load Sample</button>
+                    <button type="button" onclick="loadAppStoreSample()" class="btn btn-primary">Load App Store Sample</button>
                 </div>
             </div>
 
@@ -613,6 +614,15 @@ an item to achieve/exceed the controlled performance levels for functionality sp
     
     var selectedRow = null;
     
+    function loadAppStoreSample() {
+        json.data = [
+            ["XtraGood Client App", "1xx", "SELF", "5D992", "MMKT", "Mobility and mobile applications n.e.s.", "Jane Smith", "(202) 555-0000", "jsmith@address.com", "555 Elm St. Washington DC 22032", "NO", "NONE", "", "", "", ""]
+        ];
+    
+        updateTableUI();
+        updateSubmitterUI(json.data[0]);
+    }
+    
     function loadSample() {
         json.data = [
             ["XtraGood VPN", "2010", "ABC XYZ Manufacturing Inc", "5A002", "ENC", "Virtual private networking (VPN)", "Jane Smith", "(202) 555-0000", "jsmith@address.com", "555 Elm St. Washington DC 22032", "NO", "Shenzhen China Amsterdam Nethelands", "", "", "", ""],
@@ -979,4 +989,3 @@ END:VCALENDAR";
         </script>
     </body>
 </html>
-
